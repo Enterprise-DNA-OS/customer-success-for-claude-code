@@ -6,7 +6,15 @@
     "sections": [
       {
         "title": "Renewals in the next 90 days or overdue",
-        "sql": "select * from success.renewal_queue order by renews_on,name"
+        "sql": "select name as account,owner,renews_on,days_to_renewal,arr_cents as annual_value_cents,currency,health from success.renewal_queue order by renews_on,name",
+        "columns": [
+          "account",
+          "owner",
+          "renews_on",
+          "days_to_renewal",
+          "annual_value_cents",
+          "health"
+        ]
       },
       {
         "title": "Account health and reasons",
