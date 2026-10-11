@@ -1,11 +1,55 @@
 [
   {
-    "name": "example",
-    "title": "TODO(author): the first document this industry must produce",
-    "for_each": "select gen_random_uuid() as id, 'Example' as name",
+    "name": "quarterly-review",
+    "title": "Quarterly customer review",
+    "for_each": "select id,name from success.accounts order by name",
     "file": "name",
     "sections": [
-      { "title": "Details", "sql": "select 'replace me' as item, $1::text as record_id" }
+      {
+        "title": "Account evidence",
+        "sql": "select name,owner,health,reasons,adoption_pct,last_touch from success.account_health where id=$1"
+      },
+      {
+        "title": "Agreed outcomes",
+        "sql": "select name,due_on,status,evidence from success.objectives where account_id=$1 order by due_on"
+      },
+      {
+        "title": "Next actions",
+        "sql": "select name,owner,due_on,status from success.actions where account_id=$1 order by due_on"
+      }
+    ]
+  },
+  {
+    "name": "renewal-brief",
+    "title": "Renewal decision brief",
+    "for_each": "select id,name from success.accounts order by name",
+    "file": "name",
+    "sections": [
+      {
+        "title": "Contract history",
+        "sql": "select name,renews_on,arr_cents,currency,status,evidence from success.contracts where account_id=$1 order by renews_on",
+        "note": "Internal review. This document is not an offer or signed renewal."
+      },
+      {
+        "title": "Recent conversations",
+        "sql": "select name,occurred_on,sentiment from success.touchpoints where account_id=$1 order by occurred_on desc"
+      }
+    ]
+  },
+  {
+    "name": "success-plan",
+    "title": "Customer success plan",
+    "for_each": "select id,name from success.accounts order by name",
+    "file": "name",
+    "sections": [
+      {
+        "title": "Customer outcomes",
+        "sql": "select name,due_on,status,evidence from success.objectives where account_id=$1 order by due_on"
+      },
+      {
+        "title": "Action register",
+        "sql": "select name,owner,due_on,status,evidence from success.actions where account_id=$1 order by due_on"
+      }
     ]
   }
 ]

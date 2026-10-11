@@ -1,13 +1,31 @@
 [
   {
     "name": "week",
-    "title": "This week",
-    "subtitle": "Customer Success for Claude Code: what needs attention, rendered by npm run view",
+    "title": "Retention review",
+    "subtitle": "Renewals, evidence gaps and follow-ups",
     "sections": [
       {
-        "title": "Needs attention",
-        "note": "TODO(author): point this at the industry's attention view (overdue, stuck, quiet).",
-        "sql": "select 'replace me' as item, 'TODO(author)' as why"
+        "title": "Renewals in the next 90 days or overdue",
+        "sql": "select * from success.renewal_queue order by renews_on,name"
+      },
+      {
+        "title": "Account health and reasons",
+        "sql": "select name,owner,health,reasons from success.account_health order by name"
+      },
+      {
+        "title": "Open actions",
+        "sql": "select account,name,owner,due_on,overdue from success.action_queue where status='open' order by due_on"
+      }
+    ]
+  },
+  {
+    "name": "privacy",
+    "title": "Customer information review",
+    "sections": [
+      {
+        "title": "Evidence to review",
+        "sql": "select name,finding from success.privacy_review where finding is not null order by name",
+        "note": "Evidence reminders only. A blank list does not establish legal compliance."
       }
     ]
   }
